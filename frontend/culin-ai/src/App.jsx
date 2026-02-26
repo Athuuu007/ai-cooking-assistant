@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChefHat, User, Clock, Flame, Star, UtensilsCrossed, BrainCircuit, ChevronDown, Check, ArrowRight, ArrowLeft, Mic, Sun, Moon, Loader2, Play, X, Volume2, SkipBack, SkipForward, RotateCcw, Eye, EyeOff, Camera, Zap, History, MessageSquare, Info, Mail, Send, Settings, LogOut } from 'lucide-react';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 
-const API_URL = "https://ai-cooking-assistant-dsnh.onrender.com";
+const API_URL = "http://127.0.0.1:5001/api";
 
 const ASSETS = {
   bgs: [
@@ -237,7 +237,6 @@ const Navbar = ({ user, onLogout, onToggleSidebar, activePage, setPage }) => {
     );
 };
 
-// --- ANIMATED PROFILE PAGE ---
 const ProfilePage = ({ user, recentRecipes, onSelectRecipe, onUpdateUser }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editName, setEditName] = useState(user?.name || '');
@@ -342,7 +341,6 @@ const ProfilePage = ({ user, recentRecipes, onSelectRecipe, onUpdateUser }) => {
     );
 };
 
-// --- ANIMATED ABOUT PAGE ---
 const AboutPage = () => (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-40 px-6 max-w-5xl mx-auto text-gray-900 dark:text-white min-h-screen relative z-10">
         <div className="flex items-center gap-4 mb-8">
@@ -381,7 +379,6 @@ const AboutPage = () => (
     </motion.div>
 );
 
-// --- ANIMATED CONTACT PAGE ---
 const ContactPage = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState('idle');
@@ -420,7 +417,6 @@ const ContactPage = () => {
             </div>
             
             <div className="relative bg-white/90 dark:bg-[#18181b]/90 backdrop-blur-xl p-10 rounded-[40px] border border-gray-200 dark:border-white/10 shadow-2xl overflow-hidden">
-                {/* Glowing Ambient Background Orbs */}
                 <div className="absolute -top-32 -right-32 w-64 h-64 bg-orange-500/10 blur-[80px] rounded-full pointer-events-none"></div>
                 <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-red-500/10 blur-[80px] rounded-full pointer-events-none"></div>
                 
@@ -474,7 +470,6 @@ const CookingLoader = () => (
   </div>
 );
 
-// --- ANIMATED CINEMATIC CARDS ---
 const CinematicCard = ({ title, subtitle, tag, image, onClick }) => (
   <motion.div 
       whileHover={{ scale: 1.02, y: -8 }} 
@@ -508,7 +503,6 @@ const CinematicCard = ({ title, subtitle, tag, image, onClick }) => (
   </motion.div>
 );
 
-// --- ANIMATED RECIPE CARDS (SEARCH RESULTS) ---
 const RecipeCard = ({ recipe, index, onClick }) => (
     <motion.div 
         initial={{ opacity: 0, scale: 0.9 }} 
@@ -517,7 +511,6 @@ const RecipeCard = ({ recipe, index, onClick }) => (
         onClick={onClick} 
         className="relative rounded-[32px] overflow-hidden bg-white/90 dark:bg-[#121212]/90 backdrop-blur-lg border border-gray-200 dark:border-white/5 group cursor-pointer hover:border-orange-500/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(249,115,22,0.15)] flex flex-col h-full"
     >
-        {/* Hidden Glowing Orb */}
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-orange-500/20 blur-[50px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"></div>
 
         <div className="h-56 relative overflow-hidden z-10">
@@ -547,7 +540,6 @@ const IngredientDropdown = ({ isOpen, onClose, selectedIngredients, toggleIngred
     <AnimatePresence>{isOpen && (<motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full left-0 right-0 mt-4 bg-white/95 dark:bg-[#121212]/95 backdrop-blur-3xl rounded-[32px] border border-gray-200 dark:border-white/10 shadow-2xl z-[999] overflow-hidden"><div className="p-8 grid grid-cols-2 md:grid-cols-3 gap-6">{Object.entries(INGREDIENT_CATEGORIES).map(([category, items]) => (<div key={category}><h4 className="text-orange-500 font-black text-xs uppercase tracking-widest mb-4 border-b border-gray-200 dark:border-white/10 pb-2">{category}</h4><div className="space-y-1">{items.map((item) => (<button key={item} onClick={() => toggleIngredient(item)} className={`w-full text-left px-3 py-2.5 rounded-xl text-sm transition-all font-medium flex items-center justify-between ${selectedIngredients.includes(item) ? 'bg-orange-500 text-white font-bold' : 'text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10'}`}>{item} {selectedIngredients.includes(item) && <Check size={14} />}</button>))}</div></div>))}</div><div className="bg-gray-50 dark:bg-black/40 p-4 text-center text-xs font-bold uppercase tracking-widest text-gray-500 border-t border-gray-200 dark:border-white/5 cursor-pointer hover:text-orange-500 transition-colors" onClick={onClose}>Close Panel</div></motion.div>)}</AnimatePresence>
 );
 
-// --- ANIMATED RECIPE DETAIL PAGE ---
 const RecipeDetailPage = ({ recipe, onBack }) => {
   const [cookingMode, setCookingMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -679,7 +671,6 @@ const RecipeDetailPage = ({ recipe, onBack }) => {
   );
 };
 
-// --- ANIMATED DASHBOARD ---
 const Dashboard = ({ user, onSelectRecipe }) => {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -691,18 +682,23 @@ const Dashboard = ({ user, onSelectRecipe }) => {
   const { speak } = useSpeech();
   const fileInputRef = useRef(null);
 
-  useEffect(() => { fetch(`${API_URL}/recipes?search=quick_suggestions`).then(res => res.json()).then(data => setQuickRecipes(data)); }, []);
+  useEffect(() => {
+    fetch(`${API_URL}/recipes?search=quick_suggestions`).then(res => res.json()).then(data => setQuickRecipes(data));
+  }, []);
+
   useEffect(() => { if (selectedIngredients.length > 0) setQuery(selectedIngredients.join(", ")); }, [selectedIngredients]);
   const toggleIngredient = (item) => { setSelectedIngredients(prev => prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]); };
   
   const startListening = () => {
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) return alert("Voice input not supported in this browser.");
+    
     setIsListeningUI(true);
     const recognition = new Recognition();
     recognition.lang = 'en-IN'; 
     recognition.onend = () => setIsListeningUI(false);
     recognition.onerror = () => setIsListeningUI(false);
+
     recognition.start();
     recognition.onresult = (e) => {
         const text = e.results[0][0].transcript;
@@ -734,6 +730,7 @@ const Dashboard = ({ user, onSelectRecipe }) => {
     setIsSearching(true);
     setRecipes(null);
     setShowIngredients(false);
+    
     try {
         const res = await fetch(`${API_URL}/recipes?search=${q}`);
         const data = await res.json();
@@ -927,6 +924,121 @@ const Footer = () => {
     );
 };
 
+const LandingPage = ({ onGetStarted }) => (
+    <div className="min-h-screen w-full relative bg-[#050505] font-sans text-white overflow-y-auto overflow-x-hidden">
+        <div className="relative h-screen w-full flex flex-col items-center justify-center text-center">
+            <BackgroundCarousel images={ASSETS.bgs} overlayType="landing" />
+            <div className="relative z-10 px-6 max-w-4xl">
+                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+                    <div className="flex items-center justify-center gap-3 mb-6"><ChefHat size={70} className="text-orange-500 drop-shadow-[0_0_30px_rgba(249,115,22,0.6)]" /></div>
+                    <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 drop-shadow-2xl">The Future of <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">Cooking</span></h1>
+                    <p className="text-xl md:text-2xl text-gray-300 mb-12 font-medium leading-relaxed max-w-2xl mx-auto">AI-Powered Recipe Generation • Smart Ingredient Detection • Hands-Free Voice Navigation</p>
+                    <button onClick={onGetStarted} className="group relative inline-flex items-center justify-center px-12 py-5 text-xl font-black text-white bg-orange-600 rounded-full overflow-hidden shadow-[0_0_50px_rgba(234,88,12,0.5)] transition-all hover:bg-orange-500 hover:scale-105"><span className="relative z-10 flex items-center gap-3">Get Started <ArrowRight className="group-hover:translate-x-2 transition-transform"/></span></button>
+                </motion.div>
+            </div>
+            <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-8 z-10 text-white/50"><ChevronDown size={36} /></motion.div>
+        </div>
+
+        <div className="relative z-10 bg-[#050505] py-32 px-6">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-20">
+                    <h2 className="text-4xl md:text-6xl font-black mb-6">Your Personal <span className="text-orange-500">Sous-Chef</span></h2>
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">We've combined state-of-the-art artificial intelligence with thousands of curated recipes to completely transform your kitchen experience.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="bg-[#121212] p-10 rounded-[32px] border border-white/5 hover:border-orange-500/30 transition-all hover:-translate-y-2">
+                        <div className="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6"><Camera className="text-orange-500" size={32} /></div>
+                        <h3 className="text-2xl font-bold mb-4">Vision AI Detection</h3>
+                        <p className="text-gray-400 leading-relaxed">Don't know what to cook? Simply snap a photo of the ingredients in your fridge, and our YOLOv8 vision model will instantly identify them and generate a custom recipe.</p>
+                    </div>
+                    <div className="bg-[#121212] p-10 rounded-[32px] border border-white/5 hover:border-orange-500/30 transition-all hover:-translate-y-2">
+                        <div className="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6"><MessageSquare className="text-orange-500" size={32} /></div>
+                        <h3 className="text-2xl font-bold mb-4">Gemini AI Chatbot</h3>
+                        <p className="text-gray-400 leading-relaxed">Got a question while cooking? Chat directly with CulinAI, our advanced Sous-Chef powered by Google Gemini, to get substitute recommendations or technique tips.</p>
+                    </div>
+                    <div className="bg-[#121212] p-10 rounded-[32px] border border-white/5 hover:border-orange-500/30 transition-all hover:-translate-y-2">
+                        <div className="w-16 h-16 bg-orange-500/10 rounded-2xl flex items-center justify-center mb-6"><Mic className="text-orange-500" size={32} /></div>
+                        <h3 className="text-2xl font-bold mb-4">Hands-Free Voice</h3>
+                        <p className="text-gray-400 leading-relaxed">Messy hands? Use our Google Assistant-style voice navigation to search for recipes, and let the app read the step-by-step instructions out loud as you cook.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="relative z-10 bg-[#0a0a0a] py-32 px-6 border-t border-white/5">
+            <div className="max-w-7xl mx-auto text-center">
+                <h2 className="text-3xl md:text-5xl font-black mb-16">Everything you need to master the kitchen.</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div><h3 className="text-5xl font-black text-orange-500 mb-2">4,400+</h3><p className="text-gray-400 font-medium">Curated Recipes</p></div>
+                    <div><h3 className="text-5xl font-black text-orange-500 mb-2">100%</h3><p className="text-gray-400 font-medium">Free Access</p></div>
+                    <div><h3 className="text-5xl font-black text-orange-500 mb-2">Gen 2</h3><p className="text-gray-400 font-medium">AI Models</p></div>
+                    <div><h3 className="text-5xl font-black text-orange-500 mb-2">24/7</h3><p className="text-gray-400 font-medium">AI Support</p></div>
+                </div>
+                <button onClick={onGetStarted} className="mt-20 px-12 py-5 bg-white text-black text-xl font-black rounded-full hover:bg-orange-500 hover:text-white transition-all shadow-xl hover:shadow-[0_0_40px_rgba(249,115,22,0.4)]">Open Assistant Now</button>
+            </div>
+        </div>
+    </div>
+);
+
+const AuthScreen = ({ onLogin }) => {
+  const [isRegister, setIsRegister] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [showPass, setShowPass] = useState(false);
+  const [error, setError] = useState('');
+
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+        try {
+            const userInfo = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+            }).then(res => res.json());
+            
+            onLogin({ name: userInfo.name, email: userInfo.email, picture: userInfo.picture });
+        } catch(err) {
+            setError("Failed to fetch Google user profile.");
+        }
+    },
+    onError: () => setError("Google Login Failed")
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    const endpoint = isRegister ? '/signup' : '/login';
+    try {
+      const res = await fetch(`${API_URL}${endpoint}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
+      const data = await res.json();
+      if (res.ok) { onLogin(data.user); } else { setError(data.error || "Authentication failed"); }
+    } catch (e) { setError(`Connection failed. Is backend running?`); }
+  };
+
+  return (
+    <div className="h-screen w-full flex items-center justify-center relative bg-gray-50 dark:bg-[#050505] overflow-hidden font-sans transition-colors duration-500">
+      <BackgroundCarousel images={ASSETS.bgs} overlayType="auth" />
+      <div className="absolute top-6 right-6 z-50"><ThemeToggle /></div>
+      <div className="relative z-10 w-full max-w-[460px] p-12 bg-white/90 dark:bg-[#121212]/90 backdrop-blur-2xl rounded-[40px] border border-gray-200 dark:border-white/10 shadow-2xl text-center">
+        <h1 className="text-4xl font-black mb-2 text-gray-900 dark:text-white tracking-tight">AI Cooking Assistant</h1>
+        <p className="text-gray-500 dark:text-gray-400 mb-10 font-bold">Your smart kitchen companion.</p>
+        {error && <div className="bg-red-50 dark:bg-red-500/10 text-red-500 font-bold text-sm p-4 rounded-2xl mb-6 border border-red-200 dark:border-red-500/20">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {isRegister && <input type="text" placeholder="Full Name" className="w-full p-4 bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl text-gray-900 dark:text-white font-medium outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />}
+          <input type="email" placeholder="Email Address" className="w-full p-4 bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl text-gray-900 dark:text-white font-medium outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} required />
+          <div className="relative">
+            <input type={showPass ? "text" : "password"} placeholder="Password" className="w-full p-4 bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl text-gray-900 dark:text-white font-medium outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} required />
+            <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-5 top-5 text-gray-400 hover:text-orange-500 transition-colors">{showPass ? <EyeOff size={20}/> : <Eye size={20}/>}</button>
+          </div>
+          <button type="submit" className="w-full p-4 bg-orange-600 text-white font-black text-lg rounded-2xl hover:bg-orange-500 transition-all shadow-[0_10px_20px_rgba(249,115,22,0.3)] mt-4">{isRegister ? "Create Account" : "Sign In"}</button>
+        </form>
+        <div className="mt-8 flex flex-col gap-4">
+          <button type="button" onClick={() => loginWithGoogle()} className="w-full p-4 bg-white dark:bg-white text-gray-900 font-bold rounded-2xl hover:bg-gray-50 transition-all shadow-md border border-gray-200 flex items-center justify-center gap-3"><img src={ASSETS.googleIcon} className="w-5 h-5"/> Sign in with Google</button>
+          <button onClick={() => onLogin({ name: "Guest Chef", email: "guest@culinai.local" })} className="text-gray-500 dark:text-gray-400 font-bold hover:text-orange-500 dark:hover:text-orange-500 text-sm mt-2 transition-colors">Continue as Guest</button>
+        </div>
+        <p className="text-center text-gray-500 font-medium text-sm mt-10">{isRegister ? "Already have an account?" : "New here?"} <button onClick={() => setIsRegister(!isRegister)} className="text-orange-500 font-black ml-1 hover:underline">{isRegister ? "Login" : "Sign Up"}</button></p>
+      </div>
+    </div>
+  );
+};
+
 function MainApp() {
   const [user, setUser] = useState(null);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -1024,7 +1136,7 @@ function MainApp() {
 
 export default function App() {
   return (
-    <GoogleOAuthProvider clientId="PASTE_YOUR_REAL_CLIENT_ID_HERE">
+    <GoogleOAuthProvider clientId="770644120218-ott91v02v2g02vvvd2sr51ng989vjght.apps.googleusercontent.com">
       <MainApp />
     </GoogleOAuthProvider>
   );
