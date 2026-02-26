@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChefHat, User, Clock, Flame, Star, UtensilsCrossed, BrainCircuit, ChevronDown, Check, ArrowRight, ArrowLeft, Mic, Sun, Moon, Loader2, Play, X, Volume2, SkipBack, SkipForward, RotateCcw, Eye, EyeOff, Camera, Zap, History, MessageSquare, Info, Mail, Send, Settings, LogOut } from 'lucide-react';
 import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
 
-const API_URL = "http://127.0.0.1:5001/api";
+const API_URL = "https://ai-cooking-assistant-dsnh.onrender.com";
 
 const ASSETS = {
   bgs: [
